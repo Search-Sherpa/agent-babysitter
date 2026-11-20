@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-babysitter"
+version = "0.1.0"
+description = "Three-lane governance for autonomous coding agents: routine work runs, non-trivial work needs a cross-family consult, irreversible work needs a signed human approval."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = []
+authors = [{ name = "Jeremy Bengtson" }]
+keywords = ["ai-agents", "coding-agents", "governance", "guardrails", "human-in-the-loop", "git-hooks", "approval"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+
+[project.urls]
+Homepage = "https://github.com/Search-Sherpa/agent-babysitter"
+Issues = "https://github.com/Search-Sherpa/agent-babysitter/issues"
+Changelog = "https://github.com/Search-Sherpa/agent-babysitter/blob/main/CHANGELOG.md"
+
+[project.scripts]
+babysitter = "agent_babysitter.cli:main"
+agent-babysitter = "agent_babysitter.cli:main"
+
+[tool.setuptools]
+packages = ["agent_babysitter"]
+
+[tool.setuptools.package-data]
+agent_babysitter = ["advisors/*.sh"]

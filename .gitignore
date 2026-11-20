@@ -1,0 +1,28 @@
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Editor folders
+.vscode/
+.idea/
+
+# Local secrets (the template stays tracked)
+.env
+!.env.example
+
+# Local banned-terms list for the clean-room scan
+.lint-banned.local

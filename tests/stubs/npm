@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Fake package manager for the lane tests: records that it ran, installs nothing.
+[ -n "${STUB_LOG:-}" ] && printf 'npm %s\n' "$*" >> "$STUB_LOG"
+echo "stub npm ran: $*"

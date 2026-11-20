@@ -1,0 +1,41 @@
+{
+  "approver": {
+    "name": "the approver",
+    "identity": "approver",
+    "allowed_signers": "~/.config/agent-babysitter/allowed_signers",
+    "signing_key": "~/.config/agent-babysitter/approver_ed25519"
+  },
+  "approval": {
+    "namespace": "agent-babysitter",
+    "ttl_seconds": 900
+  },
+  "budget": {
+    "per_decision": 2,
+    "per_window": 6
+  },
+  "advisors": {
+    "gemini": {
+      "model": "gemini-REPLACE-WITH-YOUR-MODEL"
+    }
+  },
+  "seats": {
+    "claude": {
+      "architecture": {
+        "advisor": "gemini",
+        "model": "gemini-REPLACE-WITH-YOUR-ARCHITECTURE-MODEL",
+        "timeout": 480
+      }
+    }
+  },
+  "rules": {
+    "extra": [
+      {
+        "id": "make-release",
+        "lane": 3,
+        "category": "deploy",
+        "pattern": "\\bmake\\s+release\\b"
+      }
+    ],
+    "disable": []
+  }
+}
