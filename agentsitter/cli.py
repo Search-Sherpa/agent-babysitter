@@ -1,4 +1,4 @@
-"""Command-line entry point: `python -m agent_babysitter <command> ...`."""
+"""Command-line entry point: `python -m agentsitter <command> ...`."""
 
 import argparse
 import json
@@ -13,7 +13,7 @@ from . import codes, config, consult, enforce, gate, hooks, lanes, state
 
 
 def _fail(message, code):
-    print(f"babysitter: {message}", file=sys.stderr)
+    print(f"agentsitter: {message}", file=sys.stderr)
     return code
 
 
@@ -194,7 +194,7 @@ def approve_request(st, cfg, request_id, key=None, confirm=input, out=None, err=
     err = err or sys.stderr
 
     def fail(message, code):
-        print(f"babysitter: {message}", file=err)
+        print(f"agentsitter: {message}", file=err)
         return code
 
     try:
@@ -282,7 +282,7 @@ def cmd_hook(args):
             cfg = config.load(os.environ)
             return hooks.agent_hook(sys.stdin.read(), cfg, os.environ)
         except Exception as exc:  # fail closed: any error blocks the tool call
-            print(f"babysitter: hook error ({exc}); blocking.", file=sys.stderr)
+            print(f"agentsitter: hook error ({exc}); blocking.", file=sys.stderr)
             return 2
     cfg = config.load(os.environ)
     stdin_text = sys.stdin.read() if args.name == "pre-push" else ""
@@ -290,7 +290,7 @@ def cmd_hook(args):
 
 
 def build_parser():
-    parser = argparse.ArgumentParser(prog="babysitter", description="Three-lane governance for coding agents.")
+    parser = argparse.ArgumentParser(prog="agentsitter", description="Three-lane governance for coding agents.")
     sub = parser.add_subparsers(dest="command_name", metavar="COMMAND")
     sub.required = True
 
@@ -334,7 +334,7 @@ def build_parser():
 
     p = sub.add_parser("install-hooks", help="install the git hooks into a repository")
     p.add_argument("--repo", help="repository (default: current directory)")
-    p.add_argument("--force", action="store_true", help="replace hooks not written by agent-babysitter")
+    p.add_argument("--force", action="store_true", help="replace hooks not written by agentsitter")
     p.set_defaults(func=cmd_install_hooks)
 
     p = sub.add_parser("status", help="show governance status for this project")

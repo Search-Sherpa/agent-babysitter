@@ -30,7 +30,7 @@
 #       this check grok retried 401s until the timeout (seen 2026-11-11).
 #       Sign in again yourself (run `grok` interactively once) or use the
 #       next advisor.
-#   6   builder family unknown (BABYSITTER_HOST_FAMILY unset or not recognised)
+#   6   builder family unknown (AGENTSITTER_HOST_FAMILY unset or not recognised)
 #   7   the builder is itself Grok (same-family consult blocked)
 #   124 timed out, no review produced
 #   *   grok's own non-zero exit, passed through

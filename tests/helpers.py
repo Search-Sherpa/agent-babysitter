@@ -9,7 +9,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 STUBS = REPO_ROOT / "tests" / "stubs"
-NAMESPACE = "agent-babysitter"
+NAMESPACE = "agentsitter"
 
 
 def need(tool):
@@ -63,7 +63,7 @@ def base_env(tmp, config=None, family="claude", stub_mode="verdict"):
     tmp = Path(tmp)
     env = dict(os.environ)
     for name in list(env):
-        if name.startswith("BABYSITTER_") or name in ("ADVISOR_DEPTH", "CLAUDECODE", "GEMINI_CLI"):
+        if name.startswith("AGENTSITTER_") or name in ("ADVISOR_DEPTH", "CLAUDECODE", "GEMINI_CLI"):
             del env[name]
     config_file = tmp / "config.json"
     config_file.write_text(json.dumps(config or {}), encoding="utf-8")
@@ -72,25 +72,25 @@ def base_env(tmp, config=None, family="claude", stub_mode="verdict"):
     grok_login.write_text('{"expires_at": "2099-01-01T00:00:00Z"}\n', encoding="utf-8")
     env.update({
         "ASK_GROK_AUTH_FILE": str(grok_login),
-        "BABYSITTER_CONFIG": str(config_file),
-        "BABYSITTER_STATE_DIR": str(tmp / "state"),
+        "AGENTSITTER_CONFIG": str(config_file),
+        "AGENTSITTER_STATE_DIR": str(tmp / "state"),
         "PYTHONPATH": str(REPO_ROOT),
         "PATH": str(STUBS) + os.pathsep + env["PATH"],
         "STUB_MODE": stub_mode,
         "STUB_LOG": str(tmp / "stub-calls.log"),
     })
     if family:
-        env["BABYSITTER_HOST_FAMILY"] = family
+        env["AGENTSITTER_HOST_FAMILY"] = family
     return env
 
 
 def cli(args, env, cwd, stdin=None):
-    """Run the babysitter CLI as a subprocess. Returns CompletedProcess."""
-    return subprocess.run([sys.executable, "-m", "agent_babysitter", *args],
+    """Run the agentsitter CLI as a subprocess. Returns CompletedProcess."""
+    return subprocess.run([sys.executable, "-m", "agentsitter", *args],
                           capture_output=True, text=True, env=env, cwd=str(cwd), input=stdin)
 
 
 def cli_bytes(args, env, cwd):
     """Like cli, but stdout and stderr come back as raw bytes, undecoded."""
-    return subprocess.run([sys.executable, "-m", "agent_babysitter", *args],
+    return subprocess.run([sys.executable, "-m", "agentsitter", *args],
                           capture_output=True, env=env, cwd=str(cwd), stdin=subprocess.DEVNULL)

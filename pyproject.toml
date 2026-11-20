@@ -3,8 +3,8 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-babysitter"
-version = "0.1.0"
+name = "agentsitter"
+version = "0.2.0"
 description = "Three-lane governance for autonomous coding agents: routine work runs, non-trivial work needs a cross-family consult, irreversible work needs a signed human approval."
 readme = "README.md"
 license = { text = "MIT" }
@@ -30,16 +30,15 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Search-Sherpa/agent-babysitter"
-Issues = "https://github.com/Search-Sherpa/agent-babysitter/issues"
-Changelog = "https://github.com/Search-Sherpa/agent-babysitter/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/Search-Sherpa/agentsitter"
+Issues = "https://github.com/Search-Sherpa/agentsitter/issues"
+Changelog = "https://github.com/Search-Sherpa/agentsitter/blob/main/CHANGELOG.md"
 
 [project.scripts]
-babysitter = "agent_babysitter.cli:main"
-agent-babysitter = "agent_babysitter.cli:main"
+agentsitter = "agentsitter.cli:main"
 
 [tool.setuptools]
-packages = ["agent_babysitter"]
+packages = ["agentsitter"]
 
 [tool.setuptools.package-data]
-agent_babysitter = ["advisors/*.sh"]
+agentsitter = ["advisors/*.sh"]

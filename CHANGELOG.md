@@ -4,6 +4,23 @@ All notable changes to this project are recorded here. Versions follow
 [Semantic Versioning](https://semver.org/). While the version is below 1.0,
 any release may change behaviour.
 
+## 0.2.0 (alpha)
+
+Renamed from agent-babysitter to Agentsitter. No behaviour changes beyond the
+names. See "Upgrading from agent-babysitter 0.1.0" in `README.md`.
+
+- Breaking: the repository, the distribution and the Python package are now
+  `agentsitter`; the `babysitter` and `agent-babysitter` commands are now one
+  command, `agentsitter`.
+- Breaking: the default folders are now `~/.config/agentsitter` and
+  `~/.local/state/agentsitter`, the default signing namespace is `agentsitter`,
+  and the `BABYSITTER_*` environment variables are now `AGENTSITTER_*`.
+- `agentsitter install-hooks` replaces hooks written by 0.1.0 without `--force`.
+- The lane-3 self-protection rules and the agent hook still guard the 0.1.0
+  command names, variables and folders, so an old copy installed alongside this
+  one cannot be used to approve or to change the governance files.
+- The clean-room test no longer reads the `.git` file of a git worktree.
+
 ## 0.1.0 (alpha)
 
 First public release.

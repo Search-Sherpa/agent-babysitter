@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_babysitter import codes, config, consult
+from agentsitter import codes, config, consult
 
 from . import helpers
 
@@ -266,7 +266,7 @@ class ConsultCommandTest(Base):
 
 
 def consult_state(work, env):
-    from agent_babysitter import lanes, state
+    from agentsitter import lanes, state
     return state.for_project(lanes.project_root(work), env)
 
 

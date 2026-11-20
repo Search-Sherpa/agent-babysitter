@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_babysitter import config, lanes
+from agentsitter import config, lanes
 
 LANE_1 = [
     "git status",
@@ -31,7 +31,7 @@ LANE_1 = [
     "curl -X POST http://localhost:3000/hook -d x=1",
     "echo hello > out.txt",
     "cat > notes.md <<'EOF'\nremember to git push later\nEOF",
-    "babysitter consult --decision d1 --seat code --brief-file brief.md",
+    "agentsitter consult --decision d1 --seat code --brief-file brief.md",
     # Guards against over-matching.
     "curl -f https://example.com/health",
     "curl -fsSL https://example.com/install.sh -o install.sh",
@@ -106,12 +106,12 @@ LANE_3 = [
     "sudo apt install x",
     "git config core.hooksPath /dev/null",
     "rm -rf .git/hooks",
-    "ssh-keygen -Y sign -f key -n agent-babysitter file",
-    "babysitter approve 0123abcd",
-    "python -m agent_babysitter approve 0123abcd",
-    "BABYSITTER_HOST_FAMILY=grok babysitter consult --decision d --seat code --brief-file b",
+    "ssh-keygen -Y sign -f key -n agentsitter file",
+    "agentsitter approve 0123abcd",
+    "python -m agentsitter approve 0123abcd",
+    "AGENTSITTER_HOST_FAMILY=grok agentsitter consult --decision d --seat code --brief-file b",
     "npm install left-pad && git push",
-    "babysitter run -- npm publish",
+    "agentsitter run -- npm publish",
     # A command named by its path, or with a quoted word, is the same command.
     "/usr/bin/git push",
     "/usr/bin/git commit --no-verify -m x",
@@ -155,9 +155,19 @@ LANE_3 = [
     "echo SECRET=1 >| .env",
     'Set-Content .env "SECRET=1"',
     # Variables that steer the consult or the gate.
-    "ASK_GEMINI_CLI=/tmp/fake babysitter consult --decision d --seat architecture --brief-file b",
-    "CLAUDECODE= GEMINI_CLI=1 babysitter consult --decision d --seat architecture --brief-file b",
-    'env "BABYSITTER_CONFIG=/tmp/x" git status',
+    "ASK_GEMINI_CLI=/tmp/fake agentsitter consult --decision d --seat architecture --brief-file b",
+    "CLAUDECODE= GEMINI_CLI=1 agentsitter consult --decision d --seat architecture --brief-file b",
+    'env "AGENTSITTER_CONFIG=/tmp/x" git status',
+    "cp evil.json ~/.config/agentsitter/config.json",
+    # The pre-0.2.0 names, for an older release installed alongside this one.
+    "babysitter approve 0123abcd",
+    "agent-babysitter approve 0123abcd",
+    "python -m agent_babysitter approve 0123abcd",
+    "BABYSITTER_HOST_FAMILY=grok agentsitter consult --decision d --seat code --brief-file b",
+    "$env:BABYSITTER_CONFIG = 'C:\\x.json'",
+    "unset BABYSITTER_STATE_DIR",
+    "cp evil.json ~/.config/agent-babysitter/config.json",
+    "rm -rf ~/.local/state/agent-babysitter",
     # Found when the first round of fixes was reviewed.
     "2>& 1 rm -rf src",
     "cat <<EOF\n$\\\n(npm publish)\nEOF",
@@ -236,7 +246,7 @@ class LaneDetailTest(unittest.TestCase):
         self.assertEqual({m.lane for m in result.matches}, {2, 3})
 
     def test_deletion_inside_a_scratch_root_is_routine(self):
-        target = self.scratch_root / "babysitter-example" / "x"
+        target = self.scratch_root / "agentsitter-example" / "x"
         result = lanes.classify(f'rm -rf "{target.as_posix()}"', cwd=self.cwd, cfg=self.cfg)
         self.assertEqual(result.lane, 1)
 

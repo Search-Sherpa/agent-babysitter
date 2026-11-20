@@ -1,4 +1,4 @@
-include CHANGELOG.md SECURITY.md .env.example babysitter.config.example.json
+include CHANGELOG.md SECURITY.md .env.example agentsitter.config.example.json
 recursive-include examples *
 recursive-include skill *
 recursive-include tests *

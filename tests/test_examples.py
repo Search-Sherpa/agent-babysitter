@@ -4,14 +4,14 @@ import json
 import tempfile
 import unittest
 
-from agent_babysitter import config, consult, hooks as hooks_mod, lanes
+from agentsitter import config, consult, hooks as hooks_mod, lanes
 
 from .helpers import REPO_ROOT
 
 
 class ExampleConfigTest(unittest.TestCase):
     def load(self):
-        text = (REPO_ROOT / "babysitter.config.example.json").read_text(encoding="utf-8")
+        text = (REPO_ROOT / "agentsitter.config.example.json").read_text(encoding="utf-8")
         return config.validate(config.merge(config.defaults(), json.loads(text)))
 
     def test_the_example_config_passes_validation(self):
@@ -36,9 +36,9 @@ class ExampleHookSettingsTest(unittest.TestCase):
         hooks = json.loads(text)["hooks"]
         [pre] = hooks["PreToolUse"]
         self.assertEqual(set(pre["matcher"].split("|")), hooks_mod.SHELL_TOOLS | hooks_mod.EDIT_TOOLS)
-        self.assertEqual(pre["hooks"][0]["command"], "babysitter hook agent")
+        self.assertEqual(pre["hooks"][0]["command"], "agentsitter hook agent")
         [stop] = hooks["Stop"]
-        self.assertEqual(stop["hooks"][0]["command"], "babysitter hook agent")
+        self.assertEqual(stop["hooks"][0]["command"], "agentsitter hook agent")
 
 
 if __name__ == "__main__":

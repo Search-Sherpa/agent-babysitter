@@ -23,9 +23,9 @@ DEFAULTS = {
         "allowed_signers": None,
         "signing_key": None,
     },
-    "approval": {"namespace": "agent-babysitter", "ttl_seconds": 900},
+    "approval": {"namespace": "agentsitter", "ttl_seconds": 900},
     # Model family driving the session. Normally set per session through
-    # BABYSITTER_HOST_FAMILY; unknown means every consult fails closed.
+    # AGENTSITTER_HOST_FAMILY; unknown means every consult fails closed.
     "host_family": None,
     # Environment variables that prove which family is running, when present.
     "family_markers": {"CLAUDECODE": "claude", "GEMINI_CLI": "gemini"},
@@ -121,21 +121,21 @@ def home(env=None):
 
 def config_path(env=None):
     env = os.environ if env is None else env
-    explicit = env.get("BABYSITTER_CONFIG")
-    return Path(explicit) if explicit else home(env) / ".config" / "agent-babysitter" / "config.json"
+    explicit = env.get("AGENTSITTER_CONFIG")
+    return Path(explicit) if explicit else home(env) / ".config" / "agentsitter" / "config.json"
 
 
 def state_root(env=None):
     env = os.environ if env is None else env
-    explicit = env.get("BABYSITTER_STATE_DIR")
-    return Path(explicit) if explicit else home(env) / ".local" / "state" / "agent-babysitter"
+    explicit = env.get("AGENTSITTER_STATE_DIR")
+    return Path(explicit) if explicit else home(env) / ".local" / "state" / "agentsitter"
 
 
 def allowed_signers_path(cfg, env=None):
     explicit = cfg["approver"].get("allowed_signers")
     if explicit:
         return Path(explicit).expanduser()
-    return home(env) / ".config" / "agent-babysitter" / "allowed_signers"
+    return home(env) / ".config" / "agentsitter" / "allowed_signers"
 
 
 def validate(cfg):
@@ -197,8 +197,8 @@ def load(env=None):
         if not isinstance(override, dict):
             raise ConfigError(f"{path} must hold a JSON object")
         cfg = merge(cfg, override)
-    elif env.get("BABYSITTER_CONFIG"):
-        raise ConfigError(f"BABYSITTER_CONFIG points at a missing file: {path}")
+    elif env.get("AGENTSITTER_CONFIG"):
+        raise ConfigError(f"AGENTSITTER_CONFIG points at a missing file: {path}")
     try:
         return validate(cfg)
     except (AttributeError, KeyError, TypeError) as exc:

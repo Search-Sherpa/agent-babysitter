@@ -3,8 +3,8 @@
 Extra banned terms (names, hostnames and so on) are supplied from outside the
 repository, so the list itself never lands in it:
 
-  BABYSITTER_LINT_BANNED        comma-separated terms
-  BABYSITTER_LINT_BANNED_FILE   a file with one term per line
+  AGENTSITTER_LINT_BANNED        comma-separated terms
+  AGENTSITTER_LINT_BANNED_FILE   a file with one term per line
 
 Every pattern below is assembled from fragments, so this file contains no
 literal example of anything it bans and does not flag itself.
@@ -57,8 +57,8 @@ PATTERNS = _build_patterns()
 def banned_terms(env=None):
     """Extra terms from the environment and an optional file outside the repo."""
     env = os.environ if env is None else env
-    terms = [t.strip() for t in env.get("BABYSITTER_LINT_BANNED", "").split(",")]
-    listed = env.get("BABYSITTER_LINT_BANNED_FILE")
+    terms = [t.strip() for t in env.get("AGENTSITTER_LINT_BANNED", "").split(",")]
+    listed = env.get("AGENTSITTER_LINT_BANNED_FILE")
     if listed:
         terms += [line.strip() for line in Path(listed).read_text(encoding="utf-8").splitlines()]
     return [t for t in terms if t]
@@ -92,6 +92,8 @@ def repo_files(root=REPO_ROOT):
                 continue
             if name in GENERATED_AT_ROOT and Path(directory) == Path(root):
                 continue
+            if name == ".git" and Path(directory) == Path(root):
+                continue  # in a git worktree, .git is a file naming the main checkout
             yield Path(directory) / name
 
 
@@ -108,7 +110,7 @@ class CleanRoomTest(unittest.TestCase):
         files = list(repo_files())
         # Prove the walk saw the repository, not an empty directory.
         names = {p.relative_to(REPO_ROOT).as_posix() for p in files}
-        self.assertIn("agent_babysitter/enforce.py", names)
+        self.assertIn("agentsitter/enforce.py", names)
         self.assertIn("tests/test_clean_room.py", names)
         findings = scan_repo(extra_terms=banned_terms())
         self.assertEqual(findings, [], "clean-room leaks:\n" + "\n".join(findings))
@@ -141,7 +143,7 @@ class ScannerPositiveControlTest(unittest.TestCase):
             "builder" + "@" + ALLOWED_MAIL_DOMAIN,
             "https" + COLON + "//example.com/a",
             "model " + FAMILIES[0] + "-REPLACE-WITH-YOUR-MODEL",
-            "path ~/.config/agent-babysitter/config.json",
+            "path ~/.config/agentsitter/config.json",
         ]
         for line in clean:
             with self.subTest(line=line):
@@ -149,7 +151,7 @@ class ScannerPositiveControlTest(unittest.TestCase):
 
     def test_an_env_supplied_banned_term_is_caught(self):
         term = "Plan" + "ted" + "Corp"
-        terms = banned_terms({"BABYSITTER_LINT_BANNED": " other , " + term})
+        terms = banned_terms({"AGENTSITTER_LINT_BANNED": " other , " + term})
         self.assertEqual(terms, ["other", term])
         found = scan_text("planted", "made by " + term.lower() + " staff", terms)
         self.assertEqual(found, ["planted:1: banned term"])
@@ -159,7 +161,7 @@ class ScannerPositiveControlTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             listed = Path(tmp) / "banned.txt"
             listed.write_bytes(("\n" + term + "\n").encode("utf-8"))
-            terms = banned_terms({"BABYSITTER_LINT_BANNED_FILE": str(listed)})
+            terms = banned_terms({"AGENTSITTER_LINT_BANNED_FILE": str(listed)})
         self.assertEqual(terms, [term])
         self.assertEqual(scan_text("planted", "on " + term.upper(), terms), ["planted:1: banned term"])
 

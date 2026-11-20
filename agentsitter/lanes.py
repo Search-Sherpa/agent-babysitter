@@ -89,12 +89,14 @@ BUILTIN_RULES = [
     {"id": "disk-destructive", "lane": 3, "category": "deletion",
      "pattern": B + r"(?:mkfs\S*|dd\s+.*\bof=|diskpart|format\s+[a-zA-Z]:)"},
     # ---- lane 3: the governance system protecting itself -----------------------
+    # The babysitter / agent-babysitter / BABYSITTER_ forms are the pre-0.2.0 names. An
+    # older release can still be installed alongside this one, so they stay guarded.
     {"id": "self-approval", "lane": 3, "category": "self-protection",
-     "pattern": B + r"(?:agent[-_])?babysitter(?:\.exe)?\s+approve\b|" + B + r"ssh-keygen(?:\.exe)?\b.*\s-Y\s+sign\b"},
+     "pattern": B + r"(?:agentsitter|(?:agent[-_])?babysitter)(?:\.exe)?\s+approve\b|" + B + r"ssh-keygen(?:\.exe)?\b.*\s-Y\s+sign\b"},
     {"id": "governance-env", "lane": 3, "category": "self-protection",
-     "pattern": r"(?:^|[\s;&|(])(?:export\s+|set\s+)?(?:BABYSITTER_\w+|ADVISOR_DEPTH|ASK_\w+|CLAUDECODE|GEMINI_CLI)\s*=|\$env:(?:BABYSITTER_\w+|ADVISOR_DEPTH|ASK_\w+|CLAUDECODE|GEMINI_CLI)\s*=|\b(?:unset|env\s+-u)\s+(?:BABYSITTER_\w+|ADVISOR_DEPTH|CLAUDECODE|GEMINI_CLI)\b"},
+     "pattern": r"(?:^|[\s;&|(])(?:export\s+|set\s+)?(?:(?:AGENTSITTER|BABYSITTER)_\w+|ADVISOR_DEPTH|ASK_\w+|CLAUDECODE|GEMINI_CLI)\s*=|\$env:(?:(?:AGENTSITTER|BABYSITTER)_\w+|ADVISOR_DEPTH|ASK_\w+|CLAUDECODE|GEMINI_CLI)\s*=|\b(?:unset|env\s+-u)\s+(?:(?:AGENTSITTER|BABYSITTER)_\w+|ADVISOR_DEPTH|CLAUDECODE|GEMINI_CLI)\b"},
     {"id": "governance-files", "lane": 3, "category": "self-protection",
-     "pattern": r"core\.hooksPath|\.git[/\\]hooks|allowed_signers|(?:\.config|\.local[/\\]state)[/\\]agent-babysitter"},
+     "pattern": r"core\.hooksPath|\.git[/\\]hooks|allowed_signers|(?:\.config|\.local[/\\]state)[/\\](?:agentsitter|agent-babysitter)"},
     # ---- lane 2: decisions worth a second opinion -------------------------------
     {"id": "dependency-node", "lane": 2, "category": "dependency", "seat": "architecture",
      "pattern": B + r"(?:(?:npm|pnpm|bun)\s+(?:install|i|add)\s+(?:-\S+\s+)*[^-\s]\S*|(?:npm|pnpm|yarn|bun)\s+(?:add|uninstall|remove|rm|un)" + E + ")"},

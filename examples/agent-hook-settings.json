@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "babysitter hook agent"
+            "command": "agentsitter hook agent"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "babysitter hook agent"
+            "command": "agentsitter hook agent"
           }
         ]
       }

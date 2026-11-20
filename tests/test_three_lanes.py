@@ -20,7 +20,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from agent_babysitter import cli, codes, config, consult, gate, lanes, state
+from agentsitter import cli, codes, config, consult, gate, lanes, state
 
 from . import helpers
 
@@ -106,7 +106,7 @@ class Lane2NeedsOneCrossFamilyConsult(Governed):
     def test_lane_2_a_dependency_change_waits_for_a_consult_from_another_family(self):
         held = self.cli("run", "--", "npm", "install", "left-pad")
         self.assertEqual(held.returncode, codes.CONSULT_REQUIRED, held.stderr)
-        self.assertIn("babysitter consult --decision", held.stderr)
+        self.assertIn("agentsitter consult --decision", held.stderr)
         self.assertEqual(self.npm_runs("install left-pad"), 0)
 
         consulted = self.consult_for("npm install left-pad")
@@ -134,7 +134,7 @@ class Lane2NeedsOneCrossFamilyConsult(Governed):
 
         held = self.cli("run", "--", "npm", "install", "right-pad")
         self.assertEqual(held.returncode, codes.BUDGET_EXHAUSTED, held.stderr)
-        self.assertIn("babysitter budget reset", held.stderr)
+        self.assertIn("agentsitter budget reset", held.stderr)
         self.assertEqual(self.npm_runs("install right-pad"), 0)
 
         reset = self.cli("budget", "reset")
@@ -165,7 +165,7 @@ class Lane3CommitNeedsASignedApproval(Governed):
         self.assertNotEqual(done.returncode, 0)
         self.assertEqual(self.head(), before)
         [request] = self.requests("git-commit")
-        self.assertIn("babysitter approve " + request["id"], done.stderr)
+        self.assertIn("agentsitter approve " + request["id"], done.stderr)
 
     def test_lane_3_a_look_alike_approval_with_a_garbage_signature_does_not_pass(self):
         before = self.head()
@@ -242,7 +242,7 @@ class TheGitHookRunsOnlyItsOwnCode(Governed):
         self.commit_is_blocked()
 
     def test_a_package_of_our_name_planted_in_the_work_tree_is_not_imported(self):
-        fake = self.repo / "agent_babysitter"
+        fake = self.repo / "agentsitter"
         fake.mkdir()
         (fake / "__init__.py").write_text("", encoding="utf-8")
         (fake / "cli.py").write_text("def main(argv=None):\n    return 0\n", encoding="utf-8")
@@ -257,7 +257,7 @@ class TheGitHookRunsOnlyItsOwnCode(Governed):
     def test_hooks_work_when_the_install_path_holds_quotes_and_spaces(self):
         # The shim names the interpreter and the package location. Neither may be
         # read as shell or as Python source.
-        from agent_babysitter import hooks
+        from agentsitter import hooks
         for name in hooks.HOOK_NAMES:
             with self.subTest(hook=name):
                 text = hooks.shim(name, python="/opt/it's a \"py\" $HOME `x`/python",
@@ -332,7 +332,7 @@ class Lane3HistoryRewritesNeedASignedApproval(Governed):
         self.assertNotEqual(blocked.returncode, 0, blocked.stdout + blocked.stderr)
         self.assertEqual(self.rev("feature"), before)
         [request] = self.requests("git-rebase")
-        self.assertIn("babysitter approve " + request["id"], blocked.stderr)
+        self.assertIn("agentsitter approve " + request["id"], blocked.stderr)
 
         self.approve(request["id"])
         done = self.git("rebase", "main")
@@ -375,7 +375,7 @@ class Lane3HistoryRewritesNeedASignedApproval(Governed):
         self.assertNotEqual(blocked.returncode, 0, blocked.stdout + blocked.stderr)
         self.assertEqual(self.rev("main"), before)
         [request] = self.requests("git-merge-commit")
-        self.assertIn("babysitter approve " + request["id"], blocked.stderr)
+        self.assertIn("agentsitter approve " + request["id"], blocked.stderr)
         action = gate.load_request(self.state, request["id"])["action"]
         self.assertEqual(action["merge_head"], self.rev("other"), "the approval must name the merged commit")
         self.assertTrue((self.repo / ".git" / "MERGE_HEAD").is_file())
@@ -407,7 +407,7 @@ class Lane3CommandNeedsASignedApproval(Governed):
         self.assertEqual(held.returncode, codes.APPROVAL_REQUIRED, held.stderr)
         self.assertEqual(self.npm_runs("publish"), 0)
         [request] = self.requests("command")
-        self.assertIn("babysitter approve " + request["id"], held.stderr)
+        self.assertIn("agentsitter approve " + request["id"], held.stderr)
 
         self.approve(request["id"])
         ran = self.cli("run", "--", "npm", "publish")
@@ -429,7 +429,7 @@ class RunSpendsAnApprovalOnlyWhenItCanRun(Governed):
         for label, path in (("missing", self.tmp / "no-such-bash"), ("not a program", not_a_program),
                             ("a directory", self.tmp)):
             with self.subTest(bash=label):
-                done = self.cli("run", "--", "npm", "publish", env=dict(self.env, BABYSITTER_BASH=str(path)))
+                done = self.cli("run", "--", "npm", "publish", env=dict(self.env, AGENTSITTER_BASH=str(path)))
                 self.assertEqual(done.returncode, codes.USAGE, done.stderr)
                 self.assertIn("bash", done.stderr)
                 self.assertNotIn("Traceback", done.stderr)
@@ -440,7 +440,7 @@ class RunSpendsAnApprovalOnlyWhenItCanRun(Governed):
         self.assertEqual(self.cli("run", "--", "npm", "publish").returncode, codes.APPROVAL_REQUIRED)
 
     def test_a_blocked_command_is_still_reported_as_blocked_when_bash_is_missing(self):
-        done = self.cli("run", "--", "npm", "publish", env=dict(self.env, BABYSITTER_BASH=str(self.tmp / "none")))
+        done = self.cli("run", "--", "npm", "publish", env=dict(self.env, AGENTSITTER_BASH=str(self.tmp / "none")))
         self.assertEqual(done.returncode, codes.APPROVAL_REQUIRED, done.stderr)
 
 
@@ -638,7 +638,7 @@ class DeferralAndBypass(Governed):
         fake = self.tmp / "fakehooks"
         fake.mkdir()
         with open(fake / "pre-commit", "w", encoding="utf-8", newline="\n") as handle:
-            handle.write("#!/bin/sh\n# agent-babysitter hook\nexit 0\n")
+            handle.write("#!/bin/sh\n# agentsitter hook\nexit 0\n")
         (fake / "pre-commit").chmod(0o755)
         helpers.git(self.repo, "config", "core.hooksPath", str(fake))
         info, code = self.check("git commit -m x")
@@ -654,9 +654,21 @@ class DeferralAndBypass(Governed):
     def test_reinstalling_replaces_a_stale_hook_of_ours_without_force(self):
         hook = self.repo / ".git" / "hooks" / "pre-commit"
         with open(hook, "w", encoding="utf-8", newline="\n") as handle:
-            handle.write("#!/bin/sh\n# agent-babysitter hook (an older release)\nexit 1\n")
+            handle.write("#!/bin/sh\n# agentsitter hook (an older release)\nexit 1\n")
         status = self.cli("status")
         self.assertIn("pre-commit", [line for line in status.stdout.splitlines() if "reinstall" in line][0])
+        done = self.cli("install-hooks")
+        self.assertEqual(done.returncode, codes.OK, done.stderr)
+        info, code = self.check("git commit -m x")
+        self.assertEqual((code, info["status"]), (codes.OK, "deferred-to-git-hook"), info)
+
+    def test_reinstalling_replaces_a_hook_from_the_release_named_agent_babysitter(self):
+        hook = self.repo / ".git" / "hooks" / "pre-commit"
+        with open(hook, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write("#!/bin/sh\n# agent-babysitter hook (generated by `babysitter install-hooks`)\nexit 1\n")
+        # Carrying the old marker earns replacement without --force, never trust.
+        info, code = self.check("git commit -m x")
+        self.assertEqual((code, info["status"]), (codes.APPROVAL_REQUIRED, "approval-required"), info)
         done = self.cli("install-hooks")
         self.assertEqual(done.returncode, codes.OK, done.stderr)
         info, code = self.check("git commit -m x")
