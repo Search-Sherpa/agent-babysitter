@@ -2,11 +2,11 @@
   "approver": {
     "name": "the approver",
     "identity": "approver",
-    "allowed_signers": "~/.config/agent-babysitter/allowed_signers",
-    "signing_key": "~/.config/agent-babysitter/approver_ed25519"
+    "allowed_signers": "~/.config/agentsitter/allowed_signers",
+    "signing_key": "~/.config/agentsitter/approver_ed25519"
   },
   "approval": {
-    "namespace": "agent-babysitter",
+    "namespace": "agentsitter",
     "ttl_seconds": 900
   },
   "budget": {

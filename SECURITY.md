@@ -1,6 +1,6 @@
 # Security policy
 
-Agent-babysitter is alpha software. Read "What this does and does not enforce" in
+Agentsitter is alpha software. Read "What this does and does not enforce" in
 `README.md` before relying on it: it lists what the tool does not protect
 against.
 

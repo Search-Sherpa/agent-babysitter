@@ -16,7 +16,8 @@ from pathlib import Path
 from . import codes, consult, gate, hooks, lanes
 
 RUN_PREFIX = re.compile(
-    r"""^\s*(?:(?:agent-)?babysitter(?:\.exe)?|(?:"[^"]*python[^"]*"|'[^']*python[^']*'|\S*python\S*)\s+-m\s+agent_babysitter)\s+run\s+--(?:\s+|$)""",
+    # agent-babysitter and babysitter are the pre-0.2.0 names.
+    r"""^\s*(?:(?:agentsitter|(?:agent-)?babysitter)(?:\.exe)?|(?:"[^"]*python[^"]*"|'[^']*python[^']*'|\S*python\S*)\s+-m\s+(?:agentsitter|agent_babysitter))\s+run\s+--(?:\s+|$)""",
     re.IGNORECASE,
 )
 
@@ -59,7 +60,7 @@ def approval_outcome(state, action, cfg, env, consume, lane, what, detail=None):
         code, status = codes.APPROVAL_REQUIRED, "approval-required"
         lead = f"{what} is lane 3 and needs a signed human approval."
     message = (f"{lead} Request {request_id} is open. Ask the approver to run "
-               f"`babysitter approve {request_id}` in their own terminal, then retry the identical "
+               f"`agentsitter approve {request_id}` in their own terminal, then retry the identical "
                "action. An advisor's opinion never substitutes for this approval.")
     return Outcome(code, lane, status, message, request_id=request_id)
 
@@ -75,11 +76,11 @@ def consult_outcome(state, cfg, decision, seat, lane, what):
         return Outcome(codes.OK, lane, status, f"{what}: {note}.", decision=decision, seat=seat)
     if len(consult.window(state)) >= cfg["budget"]["per_window"]:
         message = (f"{what} needs a consult, but the consult budget for this window is used up. Stop and "
-                   "report your progress to the approver, who can run `babysitter budget reset`.")
+                   "report your progress to the approver, who can run `agentsitter budget reset`.")
         return Outcome(codes.BUDGET_EXHAUSTED, lane, "budget-exhausted", message, decision=decision, seat=seat)
     message = (f"{what} is lane 2 and needs one cross-family consult on record first. Write the question "
                "and its context to a brief file, then run: "
-               f"babysitter consult --decision {decision} --seat {seat} --brief-file <file> "
+               f"agentsitter consult --decision {decision} --seat {seat} --brief-file <file> "
                "and retry once you have weighed the verdict.")
     return Outcome(codes.CONSULT_REQUIRED, lane, "consult-required", message, decision=decision, seat=seat)
 
@@ -192,11 +193,11 @@ def check_command(command, cwd, cfg, env, state, mode="run", consume=False):
     action = command_action(command, cwd)
     shown = f"`{action['command']}`"
     if mode == "hook" and any(m.lane == 3 for m in live) and RUN_PREFIX.match(command):
-        # Approving here and again inside `babysitter run` would spend the approval
+        # Approving here and again inside `agentsitter run` would spend the approval
         # twice, so the hook sends the agent to the unwrapped command instead.
         outcome = Outcome(codes.APPROVAL_REQUIRED, result.lane, "approval-required",
                           f"{shown} is lane 3. This session is already governed by a hook, so run the "
-                          "command directly without the `babysitter run --` wrapper; the hook will then "
+                          "command directly without the `agentsitter run --` wrapper; the hook will then "
                           "open an approval request for it.")
     elif any(m.lane == 3 for m in live):
         outcome = approval_outcome(state, action, cfg, env, consume, result.lane, shown)

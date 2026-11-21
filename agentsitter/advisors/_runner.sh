@@ -181,15 +181,15 @@ _rr_guarded_run() {
 }
 
 # _rr_family_guard <label> <advisor family>
-# Refuses a consult when the builder's model family (BABYSITTER_HOST_FAMILY) is
+# Refuses a consult when the builder's model family (AGENTSITTER_HOST_FAMILY) is
 # unknown (return 6) or is the advisor's own family (return 7). A same-family
 # second opinion shares the builder's blind spots, so it does not count.
 _rr_family_guard() {
-  local label="$1" advisor="$2" host="${BABYSITTER_HOST_FAMILY:-}"
+  local label="$1" advisor="$2" host="${AGENTSITTER_HOST_FAMILY:-}"
   case "$host" in
     claude|gemini|codex|grok) ;;
     *)
-      printf '%s: builder family unknown (BABYSITTER_HOST_FAMILY=%s); refusing to consult.\n' "$label" "${host:-<unset>}" >&2
+      printf '%s: builder family unknown (AGENTSITTER_HOST_FAMILY=%s); refusing to consult.\n' "$label" "${host:-<unset>}" >&2
       return 6
       ;;
   esac

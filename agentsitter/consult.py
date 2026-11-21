@@ -44,7 +44,7 @@ class ConsultResult:
 
 def find_bash(cfg, env):
     """A POSIX bash for the wrappers. Never the WSL launcher in system32."""
-    explicit = env.get("BABYSITTER_BASH") or cfg.get("bash")
+    explicit = env.get("AGENTSITTER_BASH") or cfg.get("bash")
     if explicit:
         return str(explicit)
     path = env.get("PATH")
@@ -60,12 +60,12 @@ def find_bash(cfg, env):
     found = shutil.which("bash", path=path)
     if found and "system32" not in found.lower():
         return found
-    raise ConsultError("no POSIX bash found; set BABYSITTER_BASH or the config key 'bash'", codes.USAGE)
+    raise ConsultError("no POSIX bash found; set AGENTSITTER_BASH or the config key 'bash'", codes.USAGE)
 
 
 def host_family(cfg, env):
     """The builder's model family, or ConsultError(FAMILY_UNKNOWN)."""
-    declared = env.get("BABYSITTER_HOST_FAMILY") or cfg.get("host_family")
+    declared = env.get("AGENTSITTER_HOST_FAMILY") or cfg.get("host_family")
     markers = {family for name, family in cfg["family_markers"].items() if env.get(name)}
     if declared and declared not in FAMILIES:
         raise ConsultError(f"builder family {declared!r} is not one of {', '.join(FAMILIES)}",
@@ -80,7 +80,7 @@ def host_family(cfg, env):
         return declared
     if markers:
         return next(iter(markers))
-    raise ConsultError("builder family unknown; set BABYSITTER_HOST_FAMILY", codes.FAMILY_UNKNOWN)
+    raise ConsultError("builder family unknown; set AGENTSITTER_HOST_FAMILY", codes.FAMILY_UNKNOWN)
 
 
 def route(cfg, builder, seat):
@@ -165,7 +165,7 @@ def consult(state, cfg, env, decision, seat, brief, cwd, advisor=None):
     timeout = int(timeout or 600)
     # A directory of its own: a wrapper may let the advisor read the brief's directory,
     # and that must not be the whole system temp directory.
-    brief_dir = tempfile.mkdtemp(prefix="babysitter-brief-")
+    brief_dir = tempfile.mkdtemp(prefix="agentsitter-brief-")
     prompt_path = os.path.join(brief_dir, "brief.md")
     try:
         with open(prompt_path, "w", encoding="utf-8", newline="\n") as prompt:
@@ -175,7 +175,7 @@ def consult(state, cfg, env, decision, seat, brief, cwd, advisor=None):
         if advisor == "gemini" and model:
             args.append(model)
         run_env = dict(env)
-        run_env["BABYSITTER_HOST_FAMILY"] = builder
+        run_env["AGENTSITTER_HOST_FAMILY"] = builder
         run_env[f"ASK_{advisor.upper()}_TIMEOUT"] = str(timeout)
         if model:
             run_env[f"ASK_{advisor.upper()}_MODEL"] = str(model)

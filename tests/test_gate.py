@@ -6,8 +6,8 @@ import time
 import unittest
 from pathlib import Path
 
-from agent_babysitter import config, gate
-from agent_babysitter.state import State
+from agentsitter import config, gate
+from agentsitter.state import State
 
 from . import helpers
 

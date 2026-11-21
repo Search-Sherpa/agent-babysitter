@@ -1,4 +1,4 @@
-"""Process exit codes shared by every babysitter command."""
+"""Process exit codes shared by every agentsitter command."""
 
 OK = 0                  # done; the command may proceed
 USAGE = 2               # bad arguments, unusable config or missing tool

@@ -8,12 +8,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_babysitter import cli, codes, config, gate, lanes, state
+from agentsitter import cli, codes, config, gate, lanes, state
 
 from . import helpers
 
 BLOCK = 2  # agent-harness hook protocol: exit 2 blocks and shows stderr to the agent
-APPROVE_RE = re.compile(r"babysitter approve ([0-9a-f]{16})")
+APPROVE_RE = re.compile(r"agentsitter approve ([0-9a-f]{16})")
 
 
 class Base(unittest.TestCase):
@@ -78,24 +78,24 @@ class AgentHookTest(Base):
         self.assertEqual(self.pre_tool("Bash", command="npm publish").returncode, BLOCK)
 
     def test_a_wrapped_publish_is_blocked_with_an_instruction_to_run_it_directly(self):
-        done = self.pre_tool("Bash", command="babysitter run -- npm publish")
+        done = self.pre_tool("Bash", command="agentsitter run -- npm publish")
         self.assertEqual(done.returncode, BLOCK, done.stderr)
-        self.assertIn("without the `babysitter run --` wrapper", done.stderr)
+        self.assertIn("without the `agentsitter run --` wrapper", done.stderr)
         self.assertIsNone(APPROVE_RE.search(done.stderr), done.stderr)
         self.assertEqual(gate.pending(self.state), [])
 
     def test_a_fake_wrapper_prefix_does_not_wave_a_publish_through(self):
-        done = self.pre_tool("Bash", command="./python -m agent_babysitter run -- npm publish")
+        done = self.pre_tool("Bash", command="./python -m agentsitter run -- npm publish")
         self.assertEqual(done.returncode, BLOCK, done.stderr)
 
     def test_a_wrapped_routine_command_is_allowed(self):
-        done = self.pre_tool("Bash", command="babysitter run -- git status")
+        done = self.pre_tool("Bash", command="agentsitter run -- git status")
         self.assertEqual(done.returncode, 0, done.stderr)
 
     def test_a_dependency_change_is_blocked_with_the_consult_command(self):
         done = self.pre_tool("Bash", command="npm install left-pad")
         self.assertEqual(done.returncode, BLOCK, done.stderr)
-        self.assertIn("babysitter consult --decision", done.stderr)
+        self.assertIn("agentsitter consult --decision", done.stderr)
 
     def test_a_powershell_deletion_outside_scratch_is_blocked(self):
         done = self.pre_tool("PowerShell", command="Remove-Item -Recurse -Force src")
@@ -125,12 +125,12 @@ class AgentHookTest(Base):
         for name in ("settings.json", "settings.local.json"):
             with self.subTest(name=name):
                 done = self.pre_tool("Edit", file_path=str(self.repo / ".claude" / name),
-                                     old_string="babysitter hook agent", new_string="true")
+                                     old_string="agentsitter hook agent", new_string="true")
                 self.assertEqual(done.returncode, BLOCK, done.stderr)
                 self.assertRegex(done.stderr, APPROVE_RE)
 
     def test_a_shell_command_that_names_the_harness_settings_is_blocked(self):
-        done = self.pre_tool("Bash", command="sed -i s/babysitter/true/ .claude/settings.json")
+        done = self.pre_tool("Bash", command="sed -i s/agentsitter/true/ .claude/settings.json")
         self.assertEqual(done.returncode, BLOCK, done.stderr)
         self.assertRegex(done.stderr, APPROVE_RE)
 
@@ -139,14 +139,24 @@ class AgentHookTest(Base):
         done = self.pre_tool("Write", file_path=str(self.repo / ".harness" / "hooks.toml"), content="")
         self.assertEqual(done.returncode, BLOCK, done.stderr)
 
+    def test_writing_the_approver_folders_is_blocked_under_either_name(self):
+        # agent-babysitter is the pre-0.2.0 name; its keys may still be on disk.
+        for folder in ("agentsitter", "agent-babysitter"):
+            for path in (self.tmp / "home" / ".config" / folder / "config.json",
+                         self.tmp / "home" / ".local" / "state" / folder / "ledger.json"):
+                with self.subTest(path=path):
+                    done = self.pre_tool("Write", file_path=str(path), content="{}")
+                    self.assertEqual(done.returncode, BLOCK, done.stderr)
+                    self.assertRegex(done.stderr, APPROVE_RE)
+
     def test_editing_this_package_is_blocked(self):
-        from agent_babysitter import hooks as running
+        from agentsitter import hooks as running
         done = self.pre_tool("Edit", file_path=running.__file__, old_string="return 2", new_string="return 0")
         self.assertEqual(done.returncode, BLOCK, done.stderr)
         self.assertRegex(done.stderr, APPROVE_RE)
 
     def test_a_shell_command_that_names_this_package_is_blocked(self):
-        from agent_babysitter import hooks as running
+        from agentsitter import hooks as running
         done = self.pre_tool("Bash", command="sed -i s/2/0/ " + Path(running.__file__).as_posix())
         self.assertEqual(done.returncode, BLOCK, done.stderr)
 
@@ -226,7 +236,7 @@ class AgentHookTest(Base):
         self.add_files(4)
         done = self.stop()
         self.assertEqual(done.returncode, BLOCK, done.stderr)
-        self.assertIn("babysitter consult --decision changeset:", done.stderr)
+        self.assertIn("agentsitter consult --decision changeset:", done.stderr)
 
     def test_a_stop_that_is_already_continuing_is_not_blocked_again(self):
         self.add_files(4)
@@ -277,7 +287,7 @@ class InstallHooksTest(Base):
 
         forced = self.cli("install-hooks", "--force")
         self.assertEqual(forced.returncode, codes.OK, forced.stderr)
-        self.assertIn("agent-babysitter hook", hook.read_text(encoding="utf-8"))
+        self.assertIn("agentsitter hook", hook.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
