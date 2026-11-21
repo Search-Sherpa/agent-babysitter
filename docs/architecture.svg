@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1020" width="1600" height="1020">
+<defs>
+  <pattern id="pub-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+    <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+  </pattern>
+</defs>
+<style>
+  .sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  .mono { font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace; }
+</style>
+<rect x="0" y="0" width="1600" height="1020" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+<rect x="12" y="12" width="1576" height="996" rx="16" fill="url(#pub-grid)" fill-opacity="0.55"/>
+<rect x="44" y="34" width="386" height="28" rx="7" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.2"/>
+<text x="237" y="52" text-anchor="middle" class="mono" font-size="11.5" font-weight="800" fill="#1D4ED8">MIT LICENSE  |  ALPHA 0.2.0  |  A TRIPWIRE, NOT A SANDBOX</text>
+<text x="44" y="98" class="sans" font-size="31" font-weight="800" fill="#0F172A">Agentsitter: Three-Lane Governance Architecture</text>
+<text x="44" y="126" class="sans" font-size="15.5" font-weight="500" fill="#475569">Standard-library Python 3.9+ CLI, harness hooks, and git hooks sorting agent actions before they land.</text>
+<rect x="44" y="156" width="410" height="572" rx="16" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
+<text x="66" y="188" class="mono" font-size="12" font-weight="800" fill="#2563EB">1. SESSION &amp; ENFORCEMENT BOUNDARIES</text>
+<rect x="64" y="204" width="370" height="148" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+<text x="82" y="230" class="sans" font-size="16" font-weight="800" fill="#0F172A">Coding Agent Session</text>
+<text x="82" y="252" class="sans" font-size="12.5" font-weight="600" fill="#334155">Behavior: 78-line skill/SKILL.md</text>
+<text x="82" y="274" class="mono" font-size="11.5" font-weight="700" fill="#1E293B">AGENTSITTER_HOST_FAMILY</text>
+<text x="82" y="294" class="sans" font-size="12" fill="#475569">+ family_markers (CLAUDECODE, GEMINI_CLI)</text>
+<text x="82" y="314" class="sans" font-size="12" fill="#B91C1C">Fails closed (exit 14) if unknown or conflicting</text>
+<text x="82" y="336" class="mono" font-size="11" fill="#64748B">Config: ~/.config/agentsitter/config.json</text>
+<rect x="64" y="368" width="370" height="106" rx="12" fill="#FFFFFF" stroke="#3B82F6" stroke-width="1.6"/>
+<text x="82" y="394" class="mono" font-size="12" font-weight="800" fill="#1D4ED8">LAYER A: HARNESS HOOK (agentsitter hook agent)</text>
+<text x="82" y="416" class="sans" font-size="12.5" fill="#1E293B">PreToolUse: Bash, PowerShell, Write, Edit,</text>
+<text x="82" y="435" class="sans" font-size="12.5" fill="#1E293B">MultiEdit, NotebookEdit (exit 0 allow / 2 block)</text>
+<text x="82" y="456" class="sans" font-size="12.5" fill="#475569">Stop hook: runs checkpoint on uncommitted diff</text>
+<rect x="64" y="488" width="370" height="110" rx="12" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.6"/>
+<text x="82" y="514" class="mono" font-size="12" font-weight="800" fill="#0F172A">LAYER B: GIT HOOKS (python -I -S shims)</text>
+<text x="82" y="536" class="sans" font-size="12.5" fill="#1E293B">pre-commit, pre-merge-commit, pre-push, pre-rebase</text>
+<text x="82" y="556" class="sans" font-size="12.5" fill="#475569">-I -S ignores work-tree imports &amp; site-packages;</text>
+<text x="82" y="576" class="sans" font-size="12.5" fill="#475569">loads recorded package path only</text>
+<rect x="64" y="612" width="370" height="98" rx="12" fill="#FFFFFF" stroke="#475569" stroke-width="1.6"/>
+<text x="82" y="638" class="mono" font-size="12" font-weight="800" fill="#334155">LAYER C: CLI GATES (run / check / checkpoint)</text>
+<text x="82" y="660" class="sans" font-size="12.5" fill="#1E293B">agentsitter classify -- &lt;cmd&gt;  (read-only preview)</text>
+<text x="82" y="680" class="sans" font-size="12.5" fill="#1E293B">agentsitter run -- &lt;cmd&gt;  |  agentsitter checkpoint</text>
+<text x="82" y="698" class="sans" font-size="11.5" fill="#64748B">Opt-in when harness hook is absent</text>
+<line x1="454" y1="442" x2="508" y2="442" stroke="#1E293B" stroke-width="3"/>
+<polygon points="508,434 522,442 508,450" fill="#1E293B"/>
+<rect x="524" y="316" width="236" height="252" rx="16" fill="#FEFCE8" stroke="#CA8A04" stroke-width="2.4"/>
+<text x="642" y="350" text-anchor="middle" class="mono" font-size="11.5" font-weight="800" fill="#A16207">2. CLASSIFIER (lanes.py)</text>
+<text x="642" y="380" text-anchor="middle" class="sans" font-size="19" font-weight="800" fill="#0F172A">Highest Lane Wins</text>
+<text x="642" y="408" text-anchor="middle" class="sans" font-size="12.5" fill="#422006">Normalizes shell segments,</text>
+<text x="642" y="427" text-anchor="middle" class="sans" font-size="12.5" fill="#422006">checks protected paths &amp;</text>
+<text x="642" y="446" text-anchor="middle" class="sans" font-size="12.5" fill="#422006">deletions outside scratch.</text>
+<rect x="544" y="468" width="196" height="80" rx="10" fill="#FFFFFF" stroke="#EAB308" stroke-width="1.4"/>
+<text x="558" y="490" class="mono" font-size="11.5" font-weight="700" fill="#047857">Lane 1 -&gt; Exit 0</text>
+<text x="558" y="511" class="mono" font-size="11.5" font-weight="700" fill="#1D4ED8">Lane 2 -&gt; Exit 10</text>
+<text x="558" y="532" class="mono" font-size="11.5" font-weight="700" fill="#B91C1C">Lane 3 -&gt; Exit 20 / 21</text>
+<path d="M 760 366 C 792 366 785 216 820 216" fill="none" stroke="#059669" stroke-width="2.8"/>
+<polygon points="818,209 832,216 818,223" fill="#059669"/>
+<line x1="760" y1="414" x2="820" y2="414" stroke="#2563EB" stroke-width="2.8"/>
+<polygon points="818,407 832,414 818,421" fill="#2563EB"/>
+<path d="M 760 492 C 792 492 785 612 820 612" fill="none" stroke="#DC2626" stroke-width="2.8"/>
+<polygon points="818,605 832,612 818,619" fill="#DC2626"/>
+<rect x="834" y="156" width="722" height="118" rx="16" fill="#ECFDF5" stroke="#059669" stroke-width="2.2"/>
+<rect x="854" y="174" width="186" height="26" rx="6" fill="#059669"/>
+<text x="947" y="191" text-anchor="middle" class="mono" font-size="11.5" font-weight="800" fill="#FFFFFF">LANE 1: ROUTINE (EXIT 0)</text>
+<text x="1056" y="192" class="sans" font-size="16.5" font-weight="800" fill="#064E3B">Runs Immediately with Zero External Calls</text>
+<text x="854" y="224" class="sans" font-size="13.5" font-weight="600" fill="#065F46">Reading, source edits, local test suites, git status, and deleting inside scratch_dirs / scratch_roots.</text>
+<text x="854" y="248" class="mono" font-size="12" fill="#047857">Anything matching no Lane 2 or Lane 3 rule proceeds without interruption.</text>
+<rect x="834" y="294" width="722" height="214" rx="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="2.4"/>
+<rect x="854" y="312" width="218" height="26" rx="6" fill="#2563EB"/>
+<text x="963" y="329" text-anchor="middle" class="mono" font-size="11.5" font-weight="800" fill="#FFFFFF">LANE 2: NON-TRIVIAL (EXIT 10)</text>
+<text x="1088" y="330" class="sans" font-size="16" font-weight="800" fill="#1E3A8A">One Cross-Family Consult + VERDICT: Line</text>
+<text x="854" y="358" class="sans" font-size="13" font-weight="600" fill="#1E40AF">Triggers: dependency installs, migration authoring, checkpoint (&gt;8 files, &gt;300 lines, sensitive paths), or manual fork.</text>
+<rect x="854" y="374" width="682" height="62" rx="9" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.3"/>
+<text x="868" y="398" class="mono" font-size="11.2" font-weight="700" fill="#0F172A">agentsitter consult --decision &lt;id&gt; --seat &lt;architecture|ux|code|tiebreak&gt; --brief-file &lt;file&gt;</text>
+<text x="868" y="420" class="sans" font-size="11.6" fill="#334155">Wrappers close stdin, set timeouts (180/360/600/900s), reject blank output (exit 3) &amp; nesting (exit 4).</text>
+<text x="854" y="462" class="sans" font-size="12.6" font-weight="600" fill="#1E3A8A">Budget: 2 attempts per decision, 6 per window. Two failures (exit 11) fall back to logged self-judgment.</text>
+<text x="854" y="486" class="sans" font-size="12.6" font-weight="600" fill="#B91C1C">Hitting 2/decision or 6/window cap (exit 12) waits for Lane 3 reset; self-family fails (13 / 7).</text>
+<rect x="834" y="528" width="722" height="200" rx="16" fill="#FEF2F2" stroke="#DC2626" stroke-width="2.4"/>
+<rect x="854" y="546" width="246" height="26" rx="6" fill="#DC2626"/>
+<text x="977" y="563" text-anchor="middle" class="mono" font-size="11.5" font-weight="800" fill="#FFFFFF">LANE 3: HARD GATE (EXIT 20 / 21)</text>
+<text x="1116" y="564" class="sans" font-size="16" font-weight="800" fill="#7F1D1D">Signed, Single-Use Terminal Human Approval</text>
+<text x="854" y="592" class="sans" font-size="12.0" font-weight="600" fill="#991B1B">Commits, pushes, merges, rebases, publishes, deploys, infra, HTTP writes, mail, secrets/.env, sudo, external deletes.</text>
+<text x="854" y="614" class="sans" font-size="12.0" font-weight="600" fill="#7F1D1D">Self-protected: ~/.config/agentsitter, allowed_signers, state, git hooks, .claude/settings(.local).json, pkg code.</text>
+<rect x="854" y="632" width="682" height="78" rx="9" fill="#FFFFFF" stroke="#FCA5A5" stroke-width="1.3"/>
+<text x="870" y="656" class="mono" font-size="12.2" font-weight="700" fill="#991B1B">Approver in plain terminal: agentsitter approve &lt;request_id&gt;  (ssh-keygen -Y sign / verify)</text>
+<text x="870" y="677" class="sans" font-size="12.2" fill="#334155">Passphrase or hardware Ed25519 key; 900s default TTL; single-use spent markers; refuses agent/non-TTY sessions (exit 22).</text>
+<text x="870" y="696" class="sans" font-size="12.2" font-weight="700" fill="#B91C1C">An advisor verdict never unlocks Lane 3. Gate trusts allowed_signers public key only.</text>
+<rect x="44" y="750" width="760" height="232" rx="16" fill="#FFFFFF" stroke="#334155" stroke-width="1.8"/>
+<text x="66" y="780" class="mono" font-size="12" font-weight="800" fill="#0F172A">4. DEFAULT 4x4 SEATS (16 ACTIVE ASSIGNMENTS / 12 CROSS-FAMILY PAIRS + 4 BLOCKED)</text>
+<text x="66" y="808" class="mono" font-size="11" font-weight="800" fill="#475569">Builder</text>
+<text x="178" y="808" class="mono" font-size="11" font-weight="800" fill="#475569">Excluded</text>
+<text x="294" y="808" class="mono" font-size="11" font-weight="800" fill="#475569">architecture</text>
+<text x="422" y="808" class="mono" font-size="11" font-weight="800" fill="#475569">ux</text>
+<text x="548" y="808" class="mono" font-size="11" font-weight="800" fill="#475569">code</text>
+<text x="674" y="808" class="mono" font-size="11" font-weight="800" fill="#475569">tiebreak</text>
+<line x1="66" y1="816" x2="782" y2="816" stroke="#E2E8F0" stroke-width="1"/>
+<text x="66" y="838" class="mono" font-size="12.5" font-weight="800" fill="#0F172A">claude</text>
+<text x="178" y="838" class="mono" font-size="11.2" font-weight="700" fill="#B91C1C">ask-claude</text>
+<rect x="294.0" y="822.0" width="22.0" height="22.0" rx="6" fill="#1D4ED8" stroke="#1D4ED8" stroke-width="1.3"/><text x="305.0" y="836.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GM</text>
+<text x="322" y="838" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">gemini</text>
+<rect x="422.0" y="822.0" width="22.0" height="22.0" rx="6" fill="#1D4ED8" stroke="#1D4ED8" stroke-width="1.3"/><text x="433.0" y="836.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GM</text>
+<text x="450" y="838" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">gemini</text>
+<rect x="548.0" y="822.0" width="22.0" height="22.0" rx="6" fill="#047857" stroke="#047857" stroke-width="1.3"/><text x="559.0" y="836.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">CX</text>
+<text x="576" y="838" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">codex</text>
+<rect x="674.0" y="822.0" width="22.0" height="22.0" rx="6" fill="#18181B" stroke="#18181B" stroke-width="1.3"/><text x="685.0" y="836.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GK</text>
+<text x="702" y="838" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">grok</text>
+<line x1="66" y1="854" x2="782" y2="854" stroke="#E2E8F0" stroke-width="1"/>
+<text x="66" y="876" class="mono" font-size="12.5" font-weight="800" fill="#0F172A">gemini</text>
+<text x="178" y="876" class="mono" font-size="11.2" font-weight="700" fill="#B91C1C">ask-gemini</text>
+<rect x="294.0" y="860.0" width="22.0" height="22.0" rx="6" fill="#C2410C" stroke="#C2410C" stroke-width="1.3"/><text x="305.0" y="874.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">CL</text>
+<text x="322" y="876" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">claude</text>
+<rect x="422.0" y="860.0" width="22.0" height="22.0" rx="6" fill="#C2410C" stroke="#C2410C" stroke-width="1.3"/><text x="433.0" y="874.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">CL</text>
+<text x="450" y="876" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">claude</text>
+<rect x="548.0" y="860.0" width="22.0" height="22.0" rx="6" fill="#047857" stroke="#047857" stroke-width="1.3"/><text x="559.0" y="874.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">CX</text>
+<text x="576" y="876" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">codex</text>
+<rect x="674.0" y="860.0" width="22.0" height="22.0" rx="6" fill="#18181B" stroke="#18181B" stroke-width="1.3"/><text x="685.0" y="874.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GK</text>
+<text x="702" y="876" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">grok</text>
+<line x1="66" y1="892" x2="782" y2="892" stroke="#E2E8F0" stroke-width="1"/>
+<text x="66" y="914" class="mono" font-size="12.5" font-weight="800" fill="#0F172A">codex</text>
+<text x="178" y="914" class="mono" font-size="11.2" font-weight="700" fill="#B91C1C">ask-codex</text>
+<rect x="294.0" y="898.0" width="22.0" height="22.0" rx="6" fill="#C2410C" stroke="#C2410C" stroke-width="1.3"/><text x="305.0" y="912.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">CL</text>
+<text x="322" y="914" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">claude</text>
+<rect x="422.0" y="898.0" width="22.0" height="22.0" rx="6" fill="#1D4ED8" stroke="#1D4ED8" stroke-width="1.3"/><text x="433.0" y="912.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GM</text>
+<text x="450" y="914" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">gemini</text>
+<rect x="548.0" y="898.0" width="22.0" height="22.0" rx="6" fill="#18181B" stroke="#18181B" stroke-width="1.3"/><text x="559.0" y="912.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GK</text>
+<text x="576" y="914" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">grok</text>
+<rect x="674.0" y="898.0" width="22.0" height="22.0" rx="6" fill="#1D4ED8" stroke="#1D4ED8" stroke-width="1.3"/><text x="685.0" y="912.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GM</text>
+<text x="702" y="914" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">gemini</text>
+<line x1="66" y1="930" x2="782" y2="930" stroke="#E2E8F0" stroke-width="1"/>
+<text x="66" y="952" class="mono" font-size="12.5" font-weight="800" fill="#0F172A">grok</text>
+<text x="178" y="952" class="mono" font-size="11.2" font-weight="700" fill="#B91C1C">ask-grok</text>
+<rect x="294.0" y="936.0" width="22.0" height="22.0" rx="6" fill="#C2410C" stroke="#C2410C" stroke-width="1.3"/><text x="305.0" y="950.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">CL</text>
+<text x="322" y="952" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">claude</text>
+<rect x="422.0" y="936.0" width="22.0" height="22.0" rx="6" fill="#1D4ED8" stroke="#1D4ED8" stroke-width="1.3"/><text x="433.0" y="950.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GM</text>
+<text x="450" y="952" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">gemini</text>
+<rect x="548.0" y="936.0" width="22.0" height="22.0" rx="6" fill="#047857" stroke="#047857" stroke-width="1.3"/><text x="559.0" y="950.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">CX</text>
+<text x="576" y="952" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">codex</text>
+<rect x="674.0" y="936.0" width="22.0" height="22.0" rx="6" fill="#1D4ED8" stroke="#1D4ED8" stroke-width="1.3"/><text x="685.0" y="950.7" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9.7" font-weight="800" fill="#FFFFFF">GM</text>
+<text x="702" y="952" class="sans" font-size="12.5" font-weight="700" fill="#1E293B">gemini</text>
+<rect x="826" y="750" width="730" height="232" rx="16" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+<text x="848" y="780" class="mono" font-size="12" font-weight="800" fill="#38BDF8">5. SIGNATURE BINDINGS &amp; HONEST LIMITS</text>
+<text x="848" y="808" class="mono" font-size="11.8" font-weight="700" fill="#F8FAFC">Commit:</text>
+<text x="976" y="808" class="sans" font-size="12.2" fill="#CBD5E1">repo + staged tree + parent(s) + merge heads</text>
+<text x="848" y="832" class="mono" font-size="11.8" font-weight="700" fill="#F8FAFC">Push / Rebase:</text>
+<text x="976" y="832" class="sans" font-size="12.2" fill="#CBD5E1">repo + remote + ref updates  |  upstream/branch commits + HEAD</text>
+<text x="848" y="856" class="mono" font-size="11.8" font-weight="700" fill="#F8FAFC">Protected Edit:</text>
+<text x="976" y="856" class="sans" font-size="12.2" fill="#CBD5E1">tool + path + full edit SHA-256 (printed on terminal prompt)</text>
+<text x="848" y="880" class="mono" font-size="11.8" font-weight="700" fill="#F8FAFC">Other Command:</text>
+<text x="976" y="880" class="sans" font-size="12.2" fill="#CBD5E1">exact command text + working directory within TTL</text>
+<line x1="848" y1="898" x2="1534" y2="898" stroke="#334155" stroke-width="1"/>
+<text x="848" y="922" class="sans" font-size="12.2" font-weight="600" fill="#FDE68A">Alpha limits: runs with your user permissions; script/Makefile indirection can evade rules;</text>
+<text x="848" y="942" class="sans" font-size="12.2" fill="#94A3B8">reading files (including unencrypted keys) is not gated; lane 2 is advice, not a gate.</text>
+<text x="848" y="962" class="mono" font-size="11.2" fill="#38BDF8">169 tests / 10 CI cells green (a352d68) | passphrase approve checked on Win11 PS + OpenSSH 9.5 (0.1.0 only)</text>
+</svg>

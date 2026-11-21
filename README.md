@@ -28,6 +28,8 @@ second model or a person.
 
 The highest lane found in a command wins. `npm install left-pad && git push` is lane 3.
 
+![Agentsitter three-lane governance architecture](docs/architecture.svg)
+
 ## Requirements
 
 - Python 3.9 or newer. No third-party packages.
